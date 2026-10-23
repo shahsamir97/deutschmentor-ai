@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import type { TranslationDirection } from '../types/translation'
 import type { TranslationExample } from '../services/api'
 
@@ -21,7 +21,7 @@ export function TranslationForm({
 }: TranslationFormProps) {
   const [text, setText] = useState(examples[0]?.text ?? '')
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     if (text.trim()) {
       onTranslate(text.trim())
