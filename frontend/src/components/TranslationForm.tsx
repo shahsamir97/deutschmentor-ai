@@ -1,6 +1,10 @@
 import { useState, type SubmitEvent } from 'react'
 import type { TranslationDirection } from '../types/translation'
-import type { TranslationExample } from '../services/api'
+
+interface TranslationExample {
+  text: string
+  label: string
+}
 
 interface TranslationFormProps {
   direction: TranslationDirection
