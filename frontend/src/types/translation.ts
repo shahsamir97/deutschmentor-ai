@@ -3,6 +3,8 @@ export type TranslationDirection =
   | "de-en"
   | "en-de";
 
+export const MAX_TRANSLATION_TEXT_LENGTH = 1000;
+
 export interface TranslationRequest {
   text: string;
   direction: TranslationDirection;
