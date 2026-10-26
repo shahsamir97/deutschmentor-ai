@@ -1,5 +1,9 @@
 import { useState, type SubmitEvent } from 'react'
-import type { TranslationDirection } from '../types/translation'
+
+import {
+  MAX_TRANSLATION_TEXT_LENGTH,
+  type TranslationDirection,
+} from '../types/translation'
 
 interface TranslationExample {
   text: string
@@ -13,8 +17,6 @@ interface TranslationFormProps {
   error: string | null
   onTranslate: (text: string) => void
 }
-
-const MAX_TEXT_LENGTH = 5000
 
 export function TranslationForm({
   direction,
@@ -50,7 +52,7 @@ export function TranslationForm({
         className="min-h-40 flex-1 resize-y rounded-xl border border-slate-200 bg-white p-4 text-base leading-7 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 disabled:bg-slate-50"
         disabled={isLoading}
         id="sourceText"
-        maxLength={MAX_TEXT_LENGTH}
+        maxLength={MAX_TRANSLATION_TEXT_LENGTH}
         name="sourceText"
         onChange={(event) => setText(event.target.value)}
         placeholder={placeholder}
@@ -77,7 +79,7 @@ export function TranslationForm({
       </div>
       <div className="mt-2 flex items-center justify-between gap-3">
         <p className="text-xs text-slate-500">
-          Up to {MAX_TEXT_LENGTH.toLocaleString()} characters
+          Up to {MAX_TRANSLATION_TEXT_LENGTH.toLocaleString()} characters
         </p>
         <button
           className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-emerald-800 px-5 text-sm font-semibold text-white transition hover:bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800 disabled:cursor-not-allowed disabled:opacity-60"
