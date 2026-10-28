@@ -1,3 +1,5 @@
+import { useId } from 'react'
+
 import type {
   TranslationDirection,
   TranslationResponse,
@@ -7,14 +9,17 @@ interface TranslationResultProps {
   direction: TranslationDirection
   response: TranslationResponse | null
   isLoading: boolean
+  onApplySuggestion: (suggestion: string) => void
 }
 
 export function TranslationResult({
   direction,
   response,
   isLoading,
+  onApplySuggestion,
 }: TranslationResultProps) {
   const targetLanguage = direction === 'de-en' ? 'English' : 'German'
+  const suggestionHintId = useId()
 
   return (
     <section
@@ -27,11 +32,6 @@ export function TranslationResult({
         <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
           {targetLanguage} translation
         </h3>
-        {response && (
-          <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-amber-900">
-            Demo
-          </span>
-        )}
       </div>
 
       {response ? (
@@ -45,9 +45,25 @@ export function TranslationResult({
                 German language note
               </p>
               {response.correction.suggestion && (
-                <p className="mt-2 text-sm font-medium text-slate-800">
-                  {response.correction.suggestion}
-                </p>
+                <>
+                  <button
+                    aria-describedby={suggestionHintId}
+                    className="mt-2 w-full rounded-md border border-amber-300 bg-white px-3 py-2 text-left text-sm font-medium text-slate-800 transition hover:border-emerald-700 hover:text-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled={isLoading}
+                    onClick={() =>
+                      onApplySuggestion(response.correction?.suggestion ?? '')
+                    }
+                    type="button"
+                  >
+                    {response.correction.suggestion}
+                  </button>
+                  <p
+                    className="mt-1 text-xs text-slate-500"
+                    id={suggestionHintId}
+                  >
+                    Select the suggestion to use it as your input text.
+                  </p>
+                </>
               )}
               {response.correction.explanation && (
                 <p className="mt-1 text-sm leading-6 text-slate-600">
