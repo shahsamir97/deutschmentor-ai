@@ -1,8 +1,12 @@
-import type {
-  Correction,
-  TranslationDirection,
-  TranslationRequest,
-  TranslationResponse,
+import {
+  EXAMPLE_SENTENCE_COUNT,
+  type Correction,
+  type ExampleSentenceItem,
+  type ExampleSentenceRequest,
+  type ExampleSentenceResponse,
+  type TranslationDirection,
+  type TranslationRequest,
+  type TranslationResponse,
 } from '../types/translation'
 
 export interface TranslationExample {
@@ -61,6 +65,23 @@ const HTTP_ERROR_MESSAGES: Record<number, string> = {
   504: 'The translation service timed out. Please try again.',
 }
 
+export class ExampleSentencesApiError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'ExampleSentencesApiError'
+  }
+}
+
+export const EXAMPLES_GENERIC_ERROR_MESSAGE =
+  'Could not generate examples. Please try again.'
+
+const EXAMPLES_HTTP_ERROR_MESSAGES: Record<number, string> = {
+  422: 'Examples cannot be generated for this text.',
+  429: 'Too many example requests. Please try again shortly.',
+  502: 'The example service is currently unavailable.',
+  504: 'The example service timed out. Please try again.',
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
 }
@@ -87,15 +108,52 @@ function isTranslationResponse(value: unknown): value is TranslationResponse {
   )
 }
 
-export async function translateText(
-  request: TranslationRequest,
-  signal?: AbortSignal,
-): Promise<TranslationResponse> {
+function isExampleSentenceItem(value: unknown): value is ExampleSentenceItem {
+  return (
+    isRecord(value) &&
+    typeof value.german === 'string' &&
+    typeof value.translation === 'string'
+  )
+}
+
+function isExampleSentenceResponse(
+  value: unknown,
+): value is ExampleSentenceResponse {
+  return (
+    isRecord(value) &&
+    typeof value.germanText === 'string' &&
+    Array.isArray(value.sentences) &&
+    value.sentences.length === EXAMPLE_SENTENCE_COUNT &&
+    value.sentences.every(isExampleSentenceItem)
+  )
+}
+
+interface PostJsonOptions<TResponse> {
+  path: string
+  body: unknown
+  signal?: AbortSignal
+  httpErrorMessages: Record<number, string>
+  genericMessage: string
+  unreachableMessage: string
+  isValidResponse: (value: unknown) => value is TResponse
+  createError: (message: string) => Error
+}
+
+async function postJson<TResponse>({
+  path,
+  body,
+  signal,
+  httpErrorMessages,
+  genericMessage,
+  unreachableMessage,
+  isValidResponse,
+  createError,
+}: PostJsonOptions<TResponse>): Promise<TResponse> {
   let response: Response
 
   try {
-    response = await fetch(`${API_BASE_URL}/api/v1/translate`, {
-      body: JSON.stringify(request),
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       signal,
@@ -104,15 +162,11 @@ export async function translateText(
     if (signal?.aborted) {
       throw error
     }
-    throw new TranslationApiError(
-      'Could not reach the translation service. Check your connection and try again.',
-    )
+    throw createError(unreachableMessage)
   }
 
   if (!response.ok) {
-    throw new TranslationApiError(
-      HTTP_ERROR_MESSAGES[response.status] ?? GENERIC_ERROR_MESSAGE,
-    )
+    throw createError(httpErrorMessages[response.status] ?? genericMessage)
   }
 
   let data: unknown
@@ -122,12 +176,46 @@ export async function translateText(
     if (signal?.aborted) {
       throw error
     }
-    throw new TranslationApiError(GENERIC_ERROR_MESSAGE)
+    throw createError(genericMessage)
   }
 
-  if (!isTranslationResponse(data)) {
-    throw new TranslationApiError(GENERIC_ERROR_MESSAGE)
+  if (!isValidResponse(data)) {
+    throw createError(genericMessage)
   }
 
   return data
+}
+
+export function translateText(
+  request: TranslationRequest,
+  signal?: AbortSignal,
+): Promise<TranslationResponse> {
+  return postJson({
+    path: '/api/v1/translate',
+    body: request,
+    signal,
+    httpErrorMessages: HTTP_ERROR_MESSAGES,
+    genericMessage: GENERIC_ERROR_MESSAGE,
+    unreachableMessage:
+      'Could not reach the translation service. Check your connection and try again.',
+    isValidResponse: isTranslationResponse,
+    createError: (message) => new TranslationApiError(message),
+  })
+}
+
+export function generateExampleSentences(
+  request: ExampleSentenceRequest,
+  signal?: AbortSignal,
+): Promise<ExampleSentenceResponse> {
+  return postJson({
+    path: '/api/v1/example-sentences',
+    body: request,
+    signal,
+    httpErrorMessages: EXAMPLES_HTTP_ERROR_MESSAGES,
+    genericMessage: EXAMPLES_GENERIC_ERROR_MESSAGE,
+    unreachableMessage:
+      'Could not reach the example service. Check your connection and try again.',
+    isValidResponse: isExampleSentenceResponse,
+    createError: (message) => new ExampleSentencesApiError(message),
+  })
 }

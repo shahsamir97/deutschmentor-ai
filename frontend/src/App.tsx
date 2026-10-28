@@ -2,13 +2,18 @@ import { useEffect, useRef, useState } from 'react'
 import { LanguageSwitcher } from './components/LanguageSwitcher'
 import { TranslationForm } from './components/TranslationForm'
 import { TranslationResult } from './components/TranslationResult'
+import { ExampleSentences } from './components/ExampleSentences'
 import {
+  EXAMPLES_GENERIC_ERROR_MESSAGE,
+  ExampleSentencesApiError,
+  generateExampleSentences,
   GENERIC_ERROR_MESSAGE,
   getTranslationExamples,
   TranslationApiError,
   translateText,
 } from './services/api'
 import type {
+  ExampleSentencesState,
   TranslationDirection,
   TranslationState,
 } from './types/translation'
@@ -19,16 +24,81 @@ function App() {
   const [translation, setTranslation] = useState<TranslationState>({
     status: 'idle',
   })
+  const [exampleSentences, setExampleSentences] =
+    useState<ExampleSentencesState>({ status: 'idle' })
   const activeRequest = useRef<AbortController | null>(null)
+  const activeExamplesRequest = useRef<AbortController | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  useEffect(() => () => activeRequest.current?.abort(), [])
+  useEffect(
+    () => () => {
+      activeRequest.current?.abort()
+      activeExamplesRequest.current?.abort()
+    },
+    [],
+  )
+
+  async function loadExampleSentences(germanText: string) {
+    // Ignore any earlier example request; only the latest may update the UI.
+    activeExamplesRequest.current?.abort()
+    const controller = new AbortController()
+    activeExamplesRequest.current = controller
+    setExampleSentences({ status: 'loading' })
+
+    try {
+      const response = await generateExampleSentences(
+        { germanText },
+        controller.signal,
+      )
+      if (!controller.signal.aborted) {
+        setExampleSentences({ status: 'success', sentences: response.sentences })
+      }
+    } catch (requestError) {
+      if (!controller.signal.aborted) {
+        setExampleSentences({
+          status: 'error',
+          message:
+            requestError instanceof ExampleSentencesApiError
+              ? requestError.message
+              : EXAMPLES_GENERIC_ERROR_MESSAGE,
+        })
+      }
+    }
+  }
+
+  function resetExampleSentences() {
+    activeExamplesRequest.current?.abort()
+    activeExamplesRequest.current = null
+    setExampleSentences({ status: 'idle' })
+  }
+
+  function handleGenerateExamples() {
+    if (
+      translation.status !== 'success' ||
+      exampleSentences.status === 'loading'
+    ) {
+      return
+    }
+    void loadExampleSentences(translation.response.germanText)
+  }
+
+  function handleTextChange(nextText: string) {
+    // An in-flight request was started for the previous input.
+    if (exampleSentences.status === 'loading') {
+      resetExampleSentences()
+    }
+    setText(nextText)
+  }
 
   async function handleTranslate() {
     const trimmedText = text.trim()
     if (!trimmedText) {
       return
     }
+
+    // Examples that were already requested follow the new translation.
+    const shouldRefreshExamples = exampleSentences.status !== 'idle'
+    resetExampleSentences()
 
     // Only the latest request may update the UI.
     activeRequest.current?.abort()
@@ -43,6 +113,9 @@ function App() {
       )
       if (!controller.signal.aborted) {
         setTranslation({ status: 'success', response })
+        if (shouldRefreshExamples) {
+          void loadExampleSentences(response.germanText)
+        }
       }
     } catch (requestError) {
       if (!controller.signal.aborted) {
@@ -59,12 +132,13 @@ function App() {
 
   function handleDirectionChange(nextDirection: TranslationDirection) {
     activeRequest.current?.abort()
+    resetExampleSentences()
     setDirection(nextDirection)
     setTranslation({ status: 'idle' })
   }
 
   function handleApplySuggestion(suggestion: string) {
-    setText(suggestion)
+    handleTextChange(suggestion)
     textareaRef.current?.focus()
   }
 
@@ -139,7 +213,7 @@ function App() {
                     ? translation.message
                     : null
                 }
-                onTextChange={setText}
+                onTextChange={handleTextChange}
                 onTranslate={handleTranslate}
                 text={text}
                 textareaRef={textareaRef}
@@ -155,6 +229,13 @@ function App() {
                 onApplySuggestion={handleApplySuggestion}
               />
             </div>
+            {translation.status === 'success' && (
+              <ExampleSentences
+                germanText={translation.response.germanText}
+                onGenerate={handleGenerateExamples}
+                state={exampleSentences}
+              />
+            )}
           </div>
 
           <p className="mt-5 text-center text-xs leading-5 text-slate-500">
