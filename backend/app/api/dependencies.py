@@ -1,7 +1,6 @@
-from functools import lru_cache
 from typing import Annotated
 
-from fastapi import Depends
+from fastapi import Depends, Request
 from openai import AsyncOpenAI, Timeout
 
 from app.core.config import Settings, get_settings
@@ -10,9 +9,7 @@ from app.services.translation_service import TranslationService
 CONNECT_TIMEOUT_SECONDS = 5.0
 
 
-@lru_cache
-def get_openai_client() -> AsyncOpenAI:
-    settings = get_settings()
+def create_openai_client(settings: Settings) -> AsyncOpenAI:
     return AsyncOpenAI(
         api_key=settings.openai_api_key.get_secret_value(),
         timeout=Timeout(
@@ -21,6 +18,11 @@ def get_openai_client() -> AsyncOpenAI:
         ),
         max_retries=settings.openai_max_retries,
     )
+
+
+def get_openai_client(request: Request) -> AsyncOpenAI:
+    # The client is created once at startup and closed on shutdown.
+    return request.app.state.openai_client
 
 
 def get_translation_service(
