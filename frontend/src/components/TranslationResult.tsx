@@ -1,5 +1,7 @@
 import { useId } from 'react'
 
+import type { SpeechController } from '../hooks/useSpeech'
+import { SpeakerButton } from './SpeakerButton'
 import type {
   TranslationDirection,
   TranslationResponse,
@@ -9,6 +11,7 @@ interface TranslationResultProps {
   direction: TranslationDirection
   response: TranslationResponse | null
   isLoading: boolean
+  speech: SpeechController
   onApplySuggestion: (suggestion: string) => void
 }
 
@@ -16,6 +19,7 @@ export function TranslationResult({
   direction,
   response,
   isLoading,
+  speech,
   onApplySuggestion,
 }: TranslationResultProps) {
   const targetLanguage = direction === 'de-en' ? 'English' : 'German'
@@ -32,6 +36,13 @@ export function TranslationResult({
         <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
           {targetLanguage} translation
         </h3>
+        {response && direction === 'en-de' && (
+          <SpeakerButton
+            id="translation"
+            speech={speech}
+            text={response.translatedText}
+          />
+        )}
       </div>
 
       {response ? (
@@ -39,6 +50,26 @@ export function TranslationResult({
           <p className="whitespace-pre-wrap text-base leading-7 text-slate-800">
             {response.translatedText}
           </p>
+          {direction === 'de-en' && (
+            <div className="mt-4 flex items-start justify-between gap-3 border-t border-slate-200 pt-3">
+              <p className="text-sm leading-6 text-slate-600" lang="de">
+                {response.germanText}
+              </p>
+              <SpeakerButton
+                id="german-source"
+                speech={speech}
+                text={response.germanText}
+              />
+            </div>
+          )}
+          {speech.error && (
+            <p
+              className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800"
+              role="alert"
+            >
+              {speech.error}
+            </p>
+          )}
           {response.correction?.hasError && (
             <aside className="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-3">
               <p className="text-xs font-semibold uppercase tracking-wide text-amber-900">

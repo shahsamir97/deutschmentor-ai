@@ -4,6 +4,7 @@ import {
   type ExampleSentenceItem,
   type ExampleSentenceRequest,
   type ExampleSentenceResponse,
+  type SpeechRequest,
   type TranslationDirection,
   type TranslationRequest,
   type TranslationResponse,
@@ -80,6 +81,23 @@ const EXAMPLES_HTTP_ERROR_MESSAGES: Record<number, string> = {
   429: 'Too many example requests. Please try again shortly.',
   502: 'The example service is currently unavailable.',
   504: 'The example service timed out. Please try again.',
+}
+
+export class SpeechApiError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'SpeechApiError'
+  }
+}
+
+export const SPEECH_GENERIC_ERROR_MESSAGE =
+  'Could not play audio. Please try again.'
+
+const SPEECH_HTTP_ERROR_MESSAGES: Record<number, string> = {
+  422: 'This text cannot be read aloud.',
+  429: 'Too many audio requests. Please try again shortly.',
+  502: 'The audio service is currently unavailable.',
+  504: 'The audio service timed out. Please try again.',
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -218,4 +236,48 @@ export function generateExampleSentences(
     isValidResponse: isExampleSentenceResponse,
     createError: (message) => new ExampleSentencesApiError(message),
   })
+}
+
+export async function fetchSpeechAudio(
+  request: SpeechRequest,
+  signal?: AbortSignal,
+): Promise<Blob> {
+  let response: Response
+
+  try {
+    response = await fetch(`${API_BASE_URL}/api/v1/speech`, {
+      body: JSON.stringify(request),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      signal,
+    })
+  } catch (error) {
+    if (signal?.aborted) {
+      throw error
+    }
+    throw new SpeechApiError(
+      'Could not reach the audio service. Check your connection and try again.',
+    )
+  }
+
+  if (!response.ok) {
+    throw new SpeechApiError(
+      SPEECH_HTTP_ERROR_MESSAGES[response.status] ??
+        SPEECH_GENERIC_ERROR_MESSAGE,
+    )
+  }
+
+  const contentType = response.headers.get('Content-Type') ?? ''
+  if (!contentType.startsWith('audio/mpeg')) {
+    throw new SpeechApiError(SPEECH_GENERIC_ERROR_MESSAGE)
+  }
+
+  try {
+    return await response.blob()
+  } catch (error) {
+    if (signal?.aborted) {
+      throw error
+    }
+    throw new SpeechApiError(SPEECH_GENERIC_ERROR_MESSAGE)
+  }
 }
