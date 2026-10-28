@@ -17,7 +17,6 @@ export interface Correction {
 }
 
 export interface TranslationResponse {
-  originalText: string;
   translatedText: string;
   germanText: string;
   correction: Correction | null;

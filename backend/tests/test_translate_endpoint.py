@@ -29,7 +29,6 @@ PAYLOAD = {"text": SECRET_TEXT, "direction": "de-en"}
 def service() -> AsyncMock:
     mock = AsyncMock(spec=TranslationService)
     mock.translate.return_value = TranslationResponse(
-        originalText=SECRET_TEXT,
         translatedText="I have a secret password",
         germanText=SECRET_TEXT,
         correction=Correction(
@@ -51,7 +50,6 @@ def test_translate_returns_service_result(client, service):
 
     assert response.status_code == 200
     assert response.json() == {
-        "originalText": SECRET_TEXT,
         "translatedText": "I have a secret password",
         "germanText": SECRET_TEXT,
         "correction": {
