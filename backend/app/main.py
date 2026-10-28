@@ -4,9 +4,14 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.dependencies import create_openai_client
+from app.api.dependencies import (
+    create_openai_client,
+    create_speech_rate_limiter,
+    create_speech_service,
+)
 from app.api.example_sentences import router as example_sentence_router
 from app.api.health import router as health_router
+from app.api.speech import router as speech_router
 from app.api.translation import router as translation_router
 from app.core.config import get_settings
 
@@ -18,11 +23,16 @@ DEVELOPMENT_CORS_ORIGINS = [
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    client = create_openai_client(get_settings())
+    settings = get_settings()
+    client = create_openai_client(settings)
+    speech_service = create_speech_service(settings)
     app.state.openai_client = client
+    app.state.speech_service = speech_service
+    app.state.speech_rate_limiter = create_speech_rate_limiter(settings)
     try:
         yield
     finally:
+        await speech_service.close()
         await client.close()
 
 
@@ -50,5 +60,9 @@ app.include_router(
 )
 app.include_router(
     example_sentence_router,
+    prefix="/api/v1",
+)
+app.include_router(
+    speech_router,
     prefix="/api/v1",
 )

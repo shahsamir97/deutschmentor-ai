@@ -50,3 +50,12 @@ export type TranslationState =
   | { status: "loading" }
   | { status: "success"; response: TranslationResponse }
   | { status: "error"; message: string };
+
+export const MAX_SPEECH_TEXT_LENGTH = 500;
+
+export type SpeakingRate = 1.0 | 0.85;
+
+export interface SpeechRequest {
+  text: string;
+  speakingRate: SpeakingRate;
+}

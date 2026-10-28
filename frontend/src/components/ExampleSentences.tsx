@@ -1,5 +1,7 @@
 import { useId } from 'react'
 
+import type { SpeechController } from '../hooks/useSpeech'
+import { SpeakerButton } from './SpeakerButton'
 import {
   EXAMPLE_SENTENCE_COUNT,
   MAX_GERMAN_TEXT_LENGTH,
@@ -9,12 +11,14 @@ import {
 interface ExampleSentencesProps {
   germanText: string
   state: ExampleSentencesState
+  speech: SpeechController
   onGenerate: () => void
 }
 
 export function ExampleSentences({
   germanText,
   state,
+  speech,
   onGenerate,
 }: ExampleSentencesProps) {
   const hintId = useId()
@@ -74,14 +78,21 @@ export function ExampleSentences({
               {state.sentences.length} example sentences generated.
             </p>
             <ol className="mt-3 space-y-3">
-              {state.sentences.map((sentence) => (
+              {state.sentences.map((sentence, index) => (
                 <li
                   className="rounded-lg border border-slate-200 bg-white p-3"
                   key={sentence.german}
                 >
-                  <p className="text-base leading-7 text-slate-800" lang="de">
-                    {sentence.german}
-                  </p>
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-base leading-7 text-slate-800" lang="de">
+                      {sentence.german}
+                    </p>
+                    <SpeakerButton
+                      id={`example-${index}`}
+                      speech={speech}
+                      text={sentence.german}
+                    />
+                  </div>
                   <p className="mt-1 text-sm leading-6 text-slate-500" lang="en">
                     {sentence.translation}
                   </p>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { LanguageSwitcher } from './components/LanguageSwitcher'
 import { TranslationForm } from './components/TranslationForm'
 import { TranslationResult } from './components/TranslationResult'
+import { useSpeech } from './hooks/useSpeech'
 import { ExampleSentences } from './components/ExampleSentences'
 import {
   EXAMPLES_GENERIC_ERROR_MESSAGE,
@@ -26,6 +27,7 @@ function App() {
   })
   const [exampleSentences, setExampleSentences] =
     useState<ExampleSentencesState>({ status: 'idle' })
+  const speech = useSpeech()
   const activeRequest = useRef<AbortController | null>(null)
   const activeExamplesRequest = useRef<AbortController | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -95,6 +97,7 @@ function App() {
     if (!trimmedText) {
       return
     }
+    speech.stop()
 
     // Examples that were already requested follow the new translation.
     const shouldRefreshExamples = exampleSentences.status !== 'idle'
@@ -132,6 +135,7 @@ function App() {
 
   function handleDirectionChange(nextDirection: TranslationDirection) {
     activeRequest.current?.abort()
+    speech.stop()
     resetExampleSentences()
     setDirection(nextDirection)
     setTranslation({ status: 'idle' })
@@ -226,6 +230,7 @@ function App() {
                     : null
                 }
                 isLoading={isLoading}
+                speech={speech}
                 onApplySuggestion={handleApplySuggestion}
               />
             </div>
@@ -233,6 +238,7 @@ function App() {
               <ExampleSentences
                 germanText={translation.response.germanText}
                 onGenerate={handleGenerateExamples}
+                speech={speech}
                 state={exampleSentences}
               />
             )}
