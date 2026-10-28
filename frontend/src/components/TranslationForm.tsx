@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from 'react'
+import type { Ref, SubmitEvent } from 'react'
 
 import {
   MAX_TRANSLATION_TEXT_LENGTH,
@@ -15,7 +15,10 @@ interface TranslationFormProps {
   examples: TranslationExample[]
   isLoading: boolean
   error: string | null
-  onTranslate: (text: string) => void
+  text: string
+  textareaRef: Ref<HTMLTextAreaElement>
+  onTextChange: (text: string) => void
+  onTranslate: () => void
 }
 
 export function TranslationForm({
@@ -23,14 +26,15 @@ export function TranslationForm({
   examples,
   isLoading,
   error,
+  text,
+  textareaRef,
+  onTextChange,
   onTranslate,
 }: TranslationFormProps) {
-  const [text, setText] = useState(examples[0]?.text ?? '')
-
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     if (text.trim()) {
-      onTranslate(text.trim())
+      onTranslate()
     }
   }
 
@@ -54,8 +58,9 @@ export function TranslationForm({
         id="sourceText"
         maxLength={MAX_TRANSLATION_TEXT_LENGTH}
         name="sourceText"
-        onChange={(event) => setText(event.target.value)}
+        onChange={(event) => onTextChange(event.target.value)}
         placeholder={placeholder}
+        ref={textareaRef}
         required
         value={text}
       />
@@ -69,7 +74,7 @@ export function TranslationForm({
               className="rounded-full border border-slate-200 px-3 py-1.5 text-xs text-slate-600 transition hover:border-emerald-700 hover:text-emerald-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={isLoading}
               key={example.text}
-              onClick={() => setText(example.text)}
+              onClick={() => onTextChange(example.text)}
               type="button"
             >
               {example.label}

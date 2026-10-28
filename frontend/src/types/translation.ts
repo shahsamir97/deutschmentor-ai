@@ -21,3 +21,9 @@ export interface TranslationResponse {
   germanText: string;
   correction: Correction | null;
 }
+
+export type TranslationState =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; response: TranslationResponse }
+  | { status: "error"; message: string };

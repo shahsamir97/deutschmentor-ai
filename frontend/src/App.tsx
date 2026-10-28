@@ -1,44 +1,74 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { LanguageSwitcher } from './components/LanguageSwitcher'
 import { TranslationForm } from './components/TranslationForm'
 import { TranslationResult } from './components/TranslationResult'
-import { getTranslationExamples, translateText } from './services/api'
+import {
+  GENERIC_ERROR_MESSAGE,
+  getTranslationExamples,
+  TranslationApiError,
+  translateText,
+} from './services/api'
 import type {
   TranslationDirection,
-  TranslationResponse,
+  TranslationState,
 } from './types/translation'
 
 function App() {
   const [direction, setDirection] = useState<TranslationDirection>('de-en')
-  const [result, setResult] = useState<TranslationResponse | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [text, setText] = useState('')
+  const [translation, setTranslation] = useState<TranslationState>({
+    status: 'idle',
+  })
+  const activeRequest = useRef<AbortController | null>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  async function handleTranslate(text: string) {
-    setIsLoading(true)
-    setError(null)
-    setResult(null)
+  useEffect(() => () => activeRequest.current?.abort(), [])
+
+  async function handleTranslate() {
+    const trimmedText = text.trim()
+    if (!trimmedText) {
+      return
+    }
+
+    // Only the latest request may update the UI.
+    activeRequest.current?.abort()
+    const controller = new AbortController()
+    activeRequest.current = controller
+    setTranslation({ status: 'loading' })
 
     try {
-      const response = await translateText({ text, direction })
-      setResult(response)
-    } catch (requestError) {
-      setError(
-        requestError instanceof Error
-          ? requestError.message
-          : 'Translation failed. Please try again.',
+      const response = await translateText(
+        { text: trimmedText, direction },
+        controller.signal,
       )
-    } finally {
-      setIsLoading(false)
+      if (!controller.signal.aborted) {
+        setTranslation({ status: 'success', response })
+      }
+    } catch (requestError) {
+      if (!controller.signal.aborted) {
+        setTranslation({
+          status: 'error',
+          message:
+            requestError instanceof TranslationApiError
+              ? requestError.message
+              : GENERIC_ERROR_MESSAGE,
+        })
+      }
     }
   }
 
   function handleDirectionChange(nextDirection: TranslationDirection) {
+    activeRequest.current?.abort()
     setDirection(nextDirection)
-    setResult(null)
-    setError(null)
+    setTranslation({ status: 'idle' })
   }
 
+  function handleApplySuggestion(suggestion: string) {
+    setText(suggestion)
+    textareaRef.current?.focus()
+  }
+
+  const isLoading = translation.status === 'loading'
   const sourceLanguage = direction === 'de-en' ? 'German' : 'English'
   const targetLanguage = direction === 'de-en' ? 'English' : 'German'
   const examples = getTranslationExamples(direction)
@@ -77,8 +107,8 @@ function App() {
               Find the right words.
             </h1>
             <p className="mx-auto mt-4 max-w-lg text-base leading-7 text-slate-600 sm:text-lg">
-              Explore sample translations between German and English. Try the
-              examples below to preview the experience.
+              Translate between German and English, and get feedback on your
+              German. Try the examples below or enter your own text.
             </p>
           </div>
 
@@ -101,24 +131,29 @@ function App() {
 
             <div className="grid gap-4 md:grid-cols-2">
               <TranslationForm
-                key={direction}
                 direction={direction}
                 examples={examples}
                 isLoading={isLoading}
-                error={error}
+                error={translation.status === 'error' ? translation.message : null}
+                onTextChange={setText}
                 onTranslate={handleTranslate}
+                text={text}
+                textareaRef={textareaRef}
               />
               <TranslationResult
                 direction={direction}
-                response={result}
+                response={
+                  translation.status === 'success' ? translation.response : null
+                }
                 isLoading={isLoading}
+                onApplySuggestion={handleApplySuggestion}
               />
             </div>
           </div>
 
           <p className="mt-5 text-center text-xs leading-5 text-slate-500">
-            Demo mode: sample phrases only. Custom translations aren&apos;t
-            connected yet.
+            AI-generated translations can contain mistakes. Double-check
+            important text.
           </p>
         </section>
 
