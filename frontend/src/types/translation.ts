@@ -22,6 +22,29 @@ export interface TranslationResponse {
   correction: Correction | null;
 }
 
+export const MAX_GERMAN_TEXT_LENGTH = 200;
+export const EXAMPLE_SENTENCE_COUNT = 2;
+
+export interface ExampleSentenceRequest {
+  germanText: string;
+}
+
+export interface ExampleSentenceItem {
+  german: string;
+  translation: string;
+}
+
+export interface ExampleSentenceResponse {
+  germanText: string;
+  sentences: ExampleSentenceItem[];
+}
+
+export type ExampleSentencesState =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; sentences: ExampleSentenceItem[] }
+  | { status: "error"; message: string };
+
 export type TranslationState =
   | { status: "idle" }
   | { status: "loading" }
