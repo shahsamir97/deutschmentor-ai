@@ -4,6 +4,9 @@ from fastapi import Depends, Request
 from openai import AsyncOpenAI, Timeout
 
 from app.core.config import Settings, get_settings
+from app.services.example_sentence_generation_service import (
+    ExampleSentenceGenerationService,
+)
 from app.services.translation_service import TranslationService
 
 CONNECT_TIMEOUT_SECONDS = 5.0
@@ -30,3 +33,12 @@ def get_translation_service(
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> TranslationService:
     return TranslationService(client=client, model=settings.openai_model)
+
+
+def get_example_sentence_generation_service(
+    client: Annotated[AsyncOpenAI, Depends(get_openai_client)],
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> ExampleSentenceGenerationService:
+    return ExampleSentenceGenerationService(
+        client=client, model=settings.openai_model
+    )

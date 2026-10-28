@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.dependencies import create_openai_client
+from app.api.example_sentences import router as example_sentence_router
 from app.api.health import router as health_router
 from app.api.translation import router as translation_router
 from app.core.config import get_settings
@@ -45,5 +46,9 @@ app.include_router(
 )
 app.include_router(
     translation_router,
+    prefix="/api/v1",
+)
+app.include_router(
+    example_sentence_router,
     prefix="/api/v1",
 )
