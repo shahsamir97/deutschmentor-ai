@@ -70,7 +70,6 @@ export async function translateText(
   }
 
   return {
-    originalText: request.text,
     translatedText: match.translatedText,
     germanText:
       request.direction === 'de-en' ? request.text : match.translatedText,

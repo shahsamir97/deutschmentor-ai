@@ -16,7 +16,6 @@ class Correction(BaseModel):
 
 
 class TranslationResponse(BaseModel):
-    originalText: str
     translatedText: str
     germanText: str
     correction: Correction | None

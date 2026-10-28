@@ -28,7 +28,6 @@ Directions:
 - en-de: the text is English. Translate it into natural German.
 
 Output fields:
-- originalText: the user's text, unchanged.
 - translatedText: the translation into the target language.
 - germanText: for de-en, the German text with genuine spelling and
   grammar errors fixed (identical to the input if it is correct);
@@ -116,8 +115,7 @@ class TranslationService:
                 "Translation response could not be parsed"
             )
 
-        # The model must not alter the user's input.
-        return result.model_copy(update={"originalText": request.text})
+        return result
 
     @staticmethod
     def _log_failure(

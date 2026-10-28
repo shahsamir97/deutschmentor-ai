@@ -29,7 +29,6 @@ def make_request(text: str = SECRET_TEXT) -> TranslationRequest:
 
 def make_result(**overrides: object) -> TranslationResponse:
     data = {
-        "originalText": "model-altered",
         "translatedText": "I have a secret password",
         "germanText": SECRET_TEXT,
         "correction": Correction(
@@ -63,12 +62,12 @@ def status_error(cls: type[Exception], status_code: int) -> Exception:
     return cls("boom", response=response, body=None)
 
 
-def test_translate_returns_parsed_result_and_keeps_original_text():
+def test_translate_returns_parsed_result():
     service, parse = make_service(parsed=make_result())
 
     result = asyncio.run(service.translate(make_request()))
 
-    assert result.originalText == SECRET_TEXT
+    assert result.germanText == SECRET_TEXT
     assert result.translatedText == "I have a secret password"
     kwargs = parse.await_args.kwargs
     assert kwargs["model"] == "test-model"
