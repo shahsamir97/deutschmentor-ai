@@ -134,7 +134,11 @@ function App() {
                 direction={direction}
                 examples={examples}
                 isLoading={isLoading}
-                error={translation.status === 'error' ? translation.message : null}
+                error={
+                  translation.status === 'error'
+                    ? translation.message
+                    : null
+                }
                 onTextChange={setText}
                 onTranslate={handleTranslate}
                 text={text}
@@ -143,7 +147,9 @@ function App() {
               <TranslationResult
                 direction={direction}
                 response={
-                  translation.status === 'success' ? translation.response : null
+                  translation.status === 'success'
+                    ? translation.response
+                    : null
                 }
                 isLoading={isLoading}
                 onApplySuggestion={handleApplySuggestion}
