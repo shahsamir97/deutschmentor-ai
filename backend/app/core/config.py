@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     speech_rate_limit_requests: int = Field(default=20, ge=1)
     speech_rate_limit_window_seconds: float = Field(default=60.0, gt=0)
     database_url: str = Field(min_length=1)
+    embedding_model: str = Field(min_length=1)
 
     model_config = SettingsConfigDict(
         env_file=".env",
