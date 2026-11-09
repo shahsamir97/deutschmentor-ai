@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.models.grammar_rule import GrammarRule
 
+
 class GrammarRepository:
     def __init__(self, session: AsyncSession):
         self.session = session

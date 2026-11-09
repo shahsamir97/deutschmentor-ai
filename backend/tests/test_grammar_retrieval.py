@@ -4,6 +4,7 @@ from app.db.database import SessionLocal
 from app.services.embedding_service import EmbeddingService
 from app.services.grammar_retriever import GrammarRetriever
 
+
 async def main():
     print("Retrieving grammar rules for the sentence: 'Ich fahre mit dem Bus'")
     async with SessionLocal() as session:
