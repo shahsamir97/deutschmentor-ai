@@ -1,6 +1,7 @@
-from app.services.embedding_service import EmbeddingService
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.repositories.grammar_repository import GrammarRepository
+from app.services.embedding_service import EmbeddingService
 
 
 class GrammarRetriever:

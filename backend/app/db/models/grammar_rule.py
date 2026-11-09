@@ -1,7 +1,9 @@
-from app.db.base import Base
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Text
 from pgvector.sqlalchemy import VECTOR
+from sqlalchemy import String, Text
+from sqlalchemy.orm import Mapped, mapped_column
+
+from app.db.base import Base
+
 
 class GrammarRule(Base):
     __tablename__ = "grammar_rules"

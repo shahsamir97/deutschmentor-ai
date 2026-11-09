@@ -1,5 +1,7 @@
 from langchain_openai import OpenAIEmbeddings
+
 from app.core.config import get_settings
+
 
 class EmbeddingService:
     def __init__(self):
