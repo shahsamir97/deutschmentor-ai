@@ -12,7 +12,7 @@ class GrammarRepository:
             self, 
             embedding: list[float], 
             limit: int = 5,
-            max_distance: float = 0.5,
+            max_distance: float = 1,
             ) -> list[GrammarRule]:
          distance = GrammarRule.embedding.cosine_distance(embedding)
          
@@ -26,10 +26,5 @@ class GrammarRepository:
          
          result = await self.session.scalars(statement)
          rules = list(result.all())
-
-         if rules:
-            print("Similar Embedding found")
-         else:
-            print("No similar embedding found")
 
          return rules

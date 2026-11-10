@@ -6,11 +6,10 @@ from app.services.grammar_retriever import GrammarRetriever
 
 
 async def main():
-    print("Retrieving grammar rules for the sentence: 'Ich fahre mit dem Bus'")
     async with SessionLocal() as session:
         retriever = GrammarRetriever(session, EmbeddingService())
 
-        rules = await retriever.retrieve("Ich fahre mit dem Bus")
+        rules = await retriever.retrieve("Das Buch liegt auf dem Tisch.")
 
         for rule in rules:
             print(rule.id, rule.title)
