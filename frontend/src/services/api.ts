@@ -10,6 +10,11 @@ import {
   type TranslationResponse,
 } from '../types/translation'
 
+import type {
+  GrammarExplanationRequest,
+  GrammarExplanationResponse,
+} from '../types/grammar'
+
 export interface TranslationExample {
   label: string
   text: string
@@ -21,28 +26,28 @@ const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(
 )
 
 const translationExamples: Record<TranslationDirection, TranslationExample[]> =
-  {
-    'de-en': [
-      {
-        label: 'A friendly greeting',
-        text: 'Guten Morgen! Wie geht es dir?',
-      },
-      {
-        label: 'Learning German',
-        text: 'Ich lerne Deutsch, weil ich in Berlin arbeiten möchte.',
-      },
-    ],
-    'en-de': [
-      {
-        label: 'A friendly greeting',
-        text: 'Good morning! How are you?',
-      },
-      {
-        label: 'Learning German',
-        text: "I'm learning German because I want to work in Berlin.",
-      },
-    ],
-  }
+{
+  'de-en': [
+    {
+      label: 'A friendly greeting',
+      text: 'Guten Morgen! Wie geht es dir?',
+    },
+    {
+      label: 'Learning German',
+      text: 'Ich lerne Deutsch, weil ich in Berlin arbeiten möchte.',
+    },
+  ],
+  'en-de': [
+    {
+      label: 'A friendly greeting',
+      text: 'Good morning! How are you?',
+    },
+    {
+      label: 'Learning German',
+      text: "I'm learning German because I want to work in Berlin.",
+    },
+  ],
+}
 
 export function getTranslationExamples(
   direction: TranslationDirection,
@@ -98,6 +103,20 @@ const SPEECH_HTTP_ERROR_MESSAGES: Record<number, string> = {
   429: 'Too many audio requests. Please try again shortly.',
   502: 'The audio service is currently unavailable.',
   504: 'The audio service timed out. Please try again.',
+}
+
+const GRAMMAR_HTTP_ERROR_MESSAGES: Record<number, string> = {
+  422: 'Please check your text and try again.',
+  429: 'Too many grammar requests. Please try again shortly.',
+  502: 'The grammar service is currently unavailable.',
+  504: 'The grammar service timed out. Please try again.',
+}
+
+export class GrammarApiError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'GrammarApiError'
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -263,7 +282,7 @@ export async function fetchSpeechAudio(
   if (!response.ok) {
     throw new SpeechApiError(
       SPEECH_HTTP_ERROR_MESSAGES[response.status] ??
-        SPEECH_GENERIC_ERROR_MESSAGE,
+      SPEECH_GENERIC_ERROR_MESSAGE,
     )
   }
 
@@ -280,4 +299,25 @@ export async function fetchSpeechAudio(
     }
     throw new SpeechApiError(SPEECH_GENERIC_ERROR_MESSAGE)
   }
+}
+
+export async function explainGrammar(
+  request: GrammarExplanationRequest,
+  signal?: AbortSignal
+): Promise<GrammarExplanationResponse> {
+  return postJson({
+    path: '/api/v1/grammar/explain_grammar',
+    body: request,
+    signal,
+    httpErrorMessages: GRAMMAR_HTTP_ERROR_MESSAGES,
+    genericMessage: GENERIC_ERROR_MESSAGE,
+    unreachableMessage:
+      'Could not reach the grammar service. Check your connection and try again.',
+    isValidResponse: isGrammarExplanationResponse,
+    createError: (message) => new GrammarApiError(message),
+  })
+}
+
+function isGrammarExplanationResponse(value: unknown): value is GrammarExplanationResponse {
+  return isRecord(value) && typeof value.explanation === 'string'
 }
