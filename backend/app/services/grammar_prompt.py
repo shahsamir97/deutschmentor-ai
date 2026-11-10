@@ -1,6 +1,5 @@
 from app.db.models.grammar_rule import GrammarRule
 
-
 def build_grammar_prompt(
         sentence: str,
         rules: list[GrammarRule]

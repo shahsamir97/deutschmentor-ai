@@ -2,11 +2,16 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException, Request, status
 from openai import AsyncOpenAI, Timeout
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import Settings, get_settings
+from app.db.database import get_db
+from app.services.embedding_service import EmbeddingService
 from app.services.example_sentence_generation_service import (
     ExampleSentenceGenerationService,
 )
+from app.services.grammar_explanation_service import GrammarExplanationService
+from app.services.grammar_retriever import GrammarRetriever
 from app.services.speech_service import RateLimiter, SpeechService
 from app.services.translation_service import TranslationService
 
@@ -70,3 +75,19 @@ def check_speech_rate_limit(request: Request) -> None:
             status.HTTP_429_TOO_MANY_REQUESTS,
             "Too many speech requests. Please try again shortly.",
         )
+
+def get_grammar_explanation_service(
+        request: Request,
+        session: Annotated[AsyncSession, Depends(get_db)],
+) -> GrammarExplanationService:
+
+    retriever = GrammarRetriever(
+        session=session,
+        embeddings=EmbeddingService(),
+    )
+
+    return GrammarExplanationService(
+        retriever=retriever,
+        client=request.app.state.openai_client,
+        model=get_settings().openai_model
+    )
