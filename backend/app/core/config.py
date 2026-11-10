@@ -25,3 +25,17 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
+def get_settings_for_testing() -> Settings:
+    return Settings(
+        openai_api_key="test-key",
+        openai_model="test-model",
+        database_url="postgresql+asyncpg://test:test@localhost/test",
+        embedding_model="test-embedding-model",
+        openai_timeout_seconds=30.0,
+        openai_max_retries=2,
+        speech_timeout_seconds=10.0,
+        speech_cache_max_entries=128,
+        speech_rate_limit_requests=20,
+        speech_rate_limit_window_seconds=60.0,
+    )

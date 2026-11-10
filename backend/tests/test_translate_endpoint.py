@@ -5,7 +5,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.api.dependencies import get_translation_service
-from app.core.config import Settings
+from app.core.config import get_settings_for_testing
 from app.main import app
 from app.schemas.translation import (
     Correction,
@@ -129,13 +129,7 @@ def test_cors_rejects_unknown_origin(client):
 
 
 def test_lifespan_closes_openai_client():
-    settings = Settings(
-        openai_api_key="test-key",
-        openai_model="configured-model",
-        database_url="postgresql+asyncpg://test:test@localhost/test",
-        embedding_model="test-embedding-model",
-        _env_file=None,
-    )
+    settings = get_settings_for_testing()
 
     with patch("app.main.get_settings", return_value=settings), TestClient(app):
         client = app.state.openai_client
