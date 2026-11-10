@@ -1,6 +1,6 @@
-from app.db.models.grammar_rule import GrammarRule
 from openai import AsyncOpenAI
 
+from app.db.models.grammar_rule import GrammarRule
 from app.schemas.grammar_explanation import (
     GrammarExplanationRequest,
     GrammarExplanationResponse,

@@ -2,6 +2,7 @@ import { useId } from 'react'
 
 import type { SpeechController } from '../hooks/useSpeech'
 import { SpeakerButton } from './SpeakerButton'
+import { GrammarSection } from './GrammarSection'
 import {
   EXAMPLE_SENTENCE_COUNT,
   MAX_GERMAN_TEXT_LENGTH,
@@ -99,6 +100,10 @@ export function ExampleSentences({
                 </li>
               ))}
             </ol>
+            <GrammarSection
+              key={state.sentences.map((sentence) => sentence.german).join('\n')}
+              sentences={state.sentences.map((sentence) => sentence.german)}
+            />
           </>
         )}
       </div>

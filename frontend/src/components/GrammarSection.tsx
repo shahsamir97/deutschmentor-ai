@@ -1,113 +1,103 @@
+import { useEffect, useRef, useState } from 'react'
 
-import { useEffect, useRef, useState } from "react";
-
-import { explainGrammar } from "../services/api";
-import { GrammarExplanation } from "./GrammarExplanation";
-
-import type {
-    GrammarExplanationResponse,
-} from "../types/grammar";
+import {
+    explainGrammar,
+    GRAMMAR_GENERIC_ERROR_MESSAGE,
+    GrammarApiError,
+} from '../services/api'
+import type { GrammarExplanationState } from '../types/grammar'
+import { GrammarExplanation } from './GrammarExplanation'
 
 interface GrammarSectionProps {
-    sentences: [string, string];
+    sentences: string[]
 }
 
-export function GrammarSection({
-    sentences,
-}: GrammarSectionProps) {
-    const [grammarResult, setGrammarResult] =
-        useState<GrammarExplanationResponse | null>(null);
+// Remount with a new `key` when the sentences change to reset its state.
+export function GrammarSection({ sentences }: GrammarSectionProps) {
+    const [state, setState] = useState<GrammarExplanationState>({
+        status: 'idle',
+    })
+    const activeRequest = useRef<AbortController | null>(null)
+    const isLoading = state.status === 'loading'
 
-    const [isLoading, setIsLoading] = useState(false);
+    useEffect(() => () => activeRequest.current?.abort(), [])
 
-    const [error, setError] = useState<string | null>(null);
-
-    const controllerRef = useRef<AbortController | null>(null);
-
-    // Cancel requests when the sentences change or
-    // the component is removed.
-    useEffect(() => {
-        controllerRef.current?.abort();
-        controllerRef.current = null;
-
-        return () => {
-            controllerRef.current?.abort();
-        };
-    }, [sentences[0], sentences[1]]);
-
-    async function handleExplainGrammar() {
-        if (isLoading) return;
-
-        // Cancel any previous request.
-        controllerRef.current?.abort();
-
-        const controller = new AbortController();
-        controllerRef.current = controller;
-
-        setIsLoading(true);
-        setError(null);
-        setGrammarResult(null);
+    async function handleExplain() {
+        activeRequest.current?.abort()
+        const controller = new AbortController()
+        activeRequest.current = controller
+        setState({ status: 'loading' })
 
         try {
-            const result = await explainGrammar(
-                { sentences },
-                controller.signal
-            );
-
-            // Ignore results from canceled requests.
-            if (controller.signal.aborted) return;
-
-            setGrammarResult(result);
-        } catch (err) {
-            if (controller.signal.aborted) return;
-
-            setError(
-                err instanceof Error
-                    ? err.message
-                    : "Unable to explain grammar."
-            );
-        } finally {
-            // Only reset loading for the current request.
-            if (controllerRef.current === controller) {
-                controllerRef.current = null;
-                setIsLoading(false);
+            const response = await explainGrammar({ sentences }, controller.signal)
+            if (!controller.signal.aborted) {
+                console.log(response)
+                setState({ status: 'success', explanations: response.explanations })
+            }
+        } catch (requestError) {
+            if (!controller.signal.aborted) {
+                setState({
+                    status: 'error',
+                    message:
+                        requestError instanceof GrammarApiError
+                            ? requestError.message
+                            : GRAMMAR_GENERIC_ERROR_MESSAGE,
+                })
             }
         }
     }
 
     return (
         <section
-            className="mt-6 space-y-4"
-            aria-label="German grammar explanations"
+            aria-busy={isLoading}
+            aria-label="Grammar explanation"
+            className="mt-4 border-t border-slate-200 pt-4"
         >
-            <button
-                type="button"
-                onClick={handleExplainGrammar}
-                disabled={isLoading}
-                aria-busy={isLoading}
-                className="rounded-lg bg-blue-600 px-4 py-2
-                   text-white transition-colors
-                   hover:bg-blue-700
-                   disabled:cursor-not-allowed
-                   disabled:opacity-50"
-            >
-                {isLoading
-                    ? "Explaining grammar..."
-                    : "Explain Grammar"}
-            </button>
+            <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    Grammar
+                </h4>
+                {state.status !== 'success' && (
+                    <button
+                        className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg border border-emerald-800 bg-white px-4 text-sm font-semibold text-emerald-900 transition hover:bg-emerald-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800 disabled:cursor-not-allowed disabled:opacity-60"
+                        disabled={isLoading}
+                        onClick={() => void handleExplain()}
+                        type="button"
+                    >
+                        {isLoading ? (
+                            <>
+                                <span
+                                    aria-hidden="true"
+                                    className="size-4 animate-spin rounded-full border-2 border-emerald-800/30 border-t-emerald-800"
+                                />
+                                Explaining grammar
+                            </>
+                        ) : (
+                            'Explain Grammar'
+                        )}
+                    </button>
+                )}
+            </div>
 
-            {error && (
+            <div aria-live="polite" role="status">
+                {isLoading && (
+                    <p className="mt-3 text-sm text-slate-600">
+                        Explaining grammar…
+                    </p>
+                )}
+                {state.status === 'success' && (
+                    <GrammarExplanation explanations={state.explanations} />
+                )}
+            </div>
+
+            {state.status === 'error' && (
                 <p
+                    className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800"
                     role="alert"
-                    className="text-sm text-red-600"
                 >
-                    {error}
+                    {state.message}
                 </p>
             )}
-
-            {grammarResult && (
-                <GrammarExplanation response={grammarResult} />
-            )}
         </section>
-    );
+    )
 }
