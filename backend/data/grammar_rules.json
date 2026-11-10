@@ -1,20 +1,586 @@
-
 [
   {
-    "id": "grammar-dative-mit",
-    "topic": "Dative Prepositions",
-    "level": "A2",
-    "title": "The preposition mit",
-    "content": "The preposition mit requires the dative case. Example: Ich fahre mit dem Bus. Bus is masculine, so der Bus becomes dem Bus.",
-    "source": "https://learngerman.dw.com/"
+    "id": "grammar-nominative-subject",
+    "topic": "Nominative Case",
+    "level": "A1",
+    "title": "Nominative for the subject",
+    "content": "Use nominative for the person or thing performing the action. Ask Wer? or Was? Example: Der Mann liest. Der Mann is the subject.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
   },
   {
-    "id": "grammar-time-um",
-    "topic": "Time Expressions",
+    "id": "grammar-nominative-definite-articles",
+    "topic": "Nominative Articles",
     "level": "A1",
-    "title": "Using um for exact times",
-    "content": "Use um before a specific clock time. Example: Der Bus kommt um acht Uhr.",
-    "source": "https://learngerman.dw.com/"
+    "title": "Definite articles in nominative",
+    "content": "Nominative definite articles are der (masculine), die (feminine), das (neuter), and die (plural). Example: Der Hund schläft. Die Katze schläft. Das Kind schläft. Die Kinder schlafen.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-nominative-indefinite-articles",
+    "topic": "Nominative Articles",
+    "level": "A1",
+    "title": "Indefinite articles in nominative",
+    "content": "Nominative indefinite articles are ein (masculine), eine (feminine), and ein (neuter). There is no indefinite plural article. Example: Ein Mann wartet. Eine Frau wartet. Ein Kind wartet.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-nominative-negation-kein",
+    "topic": "Nominative Articles",
+    "level": "A1",
+    "title": "Negation with kein in nominative",
+    "content": "Use kein (masculine/neuter), keine (feminine/plural) to negate nouns in nominative. Example: Das ist kein Hund. Das ist keine Katze. Das sind keine Hunde.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-nominative-sein",
+    "topic": "Nominative Verbs",
+    "level": "A1",
+    "title": "Nominative after sein",
+    "content": "The verb sein links the subject to an identifying noun in nominative, not accusative. Example: Er ist ein Lehrer. Sie ist eine Ärztin.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-nominative-werden",
+    "topic": "Nominative Verbs",
+    "level": "A2",
+    "title": "Nominative after werden",
+    "content": "When werden means to become, an identifying noun after it is nominative. Example: Mein Bruder wird ein Arzt.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-nominative-bleiben",
+    "topic": "Nominative Verbs",
+    "level": "A2",
+    "title": "Nominative after bleiben",
+    "content": "When bleiben means to remain, an identifying noun after it is nominative. Example: Sie bleibt die Chefin.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-nominative-personal-pronouns",
+    "topic": "Nominative Pronouns",
+    "level": "A1",
+    "title": "Personal pronouns in nominative",
+    "content": "Nominative personal pronouns are ich, du, er, sie, es, wir, ihr, sie, Sie. Example: Ich lerne Deutsch. Wir wohnen in Berlin.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-nominative-possessive-articles",
+    "topic": "Nominative Articles",
+    "level": "A1",
+    "title": "Possessive articles in nominative",
+    "content": "Possessive articles have endings matching noun gender and number: mein Vater, meine Mutter, mein Kind, meine Freunde. Example: Mein Bruder arbeitet.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-nominative-adjective-endings",
+    "topic": "Adjective Declension",
+    "level": "A2",
+    "title": "Adjective endings in nominative with definite articles",
+    "content": "After a nominative definite article, adjectives take -e for masculine, feminine, and neuter singular, and -en for plural. Example: der kleine Hund, die kleine Katze, das kleine Kind, die kleinen Kinder.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-direct-object",
+    "topic": "Accusative Case",
+    "level": "A1",
+    "title": "Accusative for direct objects",
+    "content": "Use accusative for many direct objects receiving the action. Ask Wen? or Was? Example: Ich sehe den Mann. Den Mann is the direct object.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-definite-articles",
+    "topic": "Accusative Articles",
+    "level": "A1",
+    "title": "Definite articles in accusative",
+    "content": "Accusative definite articles are den (masculine), die (feminine), das (neuter), and die (plural). Only masculine singular changes from nominative der to den. Example: Ich kaufe den Apfel.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-indefinite-articles",
+    "topic": "Accusative Articles",
+    "level": "A1",
+    "title": "Indefinite articles in accusative",
+    "content": "Accusative indefinite articles are einen (masculine), eine (feminine), and ein (neuter). Example: Ich habe einen Hund, eine Katze und ein Fahrrad.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-negation-kein",
+    "topic": "Accusative Articles",
+    "level": "A1",
+    "title": "Negation with kein in accusative",
+    "content": "Use keinen for masculine singular, keine for feminine and plural, and kein for neuter singular. Example: Ich habe keinen Bruder. Ich habe keine Zeit.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-haben",
+    "topic": "Accusative Verbs",
+    "level": "A1",
+    "title": "The verb haben takes accusative",
+    "content": "The verb haben normally takes an accusative object. Example: Ich habe einen Termin. Einen Termin is masculine accusative.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-sehen",
+    "topic": "Accusative Verbs",
+    "level": "A1",
+    "title": "The verb sehen takes accusative",
+    "content": "Use an accusative object with sehen. Example: Wir sehen den Lehrer. Der Lehrer changes to den Lehrer.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-kaufen",
+    "topic": "Accusative Verbs",
+    "level": "A1",
+    "title": "The verb kaufen takes accusative",
+    "content": "The thing purchased is generally accusative with kaufen. Example: Sie kauft einen Computer.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-besuchen",
+    "topic": "Accusative Verbs",
+    "level": "A1",
+    "title": "The verb besuchen takes accusative",
+    "content": "Besuchen takes an accusative object without a preposition. Example: Ich besuche meinen Freund. Do not add zu before meinen Freund here.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-fragen",
+    "topic": "Accusative Verbs",
+    "level": "A2",
+    "title": "The person asked is accusative with fragen",
+    "content": "With fragen, the person being asked is accusative. Example: Ich frage den Lehrer. Compare antworten, which takes dative.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-personal-pronouns",
+    "topic": "Accusative Pronouns",
+    "level": "A1",
+    "title": "Personal pronouns in accusative",
+    "content": "Accusative pronouns are mich, dich, ihn, sie, es, uns, euch, sie, Sie. Example: Der Lehrer sieht mich. Ich sehe ihn.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-possessive-articles",
+    "topic": "Accusative Articles",
+    "level": "A1",
+    "title": "Possessive articles in accusative",
+    "content": "Masculine singular possessive articles take -en in accusative: meinen, deinen, seinen. Feminine singular takes -e; neuter singular has no ending. Example: Ich suche meinen Schlüssel.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-fuer",
+    "topic": "Accusative Prepositions",
+    "level": "A1",
+    "title": "The preposition für",
+    "content": "Für always requires accusative. Example: Das Geschenk ist für meinen Vater. Der Vater becomes meinen Vater with the possessive article.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-accusative-ohne",
+    "topic": "Accusative Prepositions",
+    "level": "A1",
+    "title": "The preposition ohne",
+    "content": "Ohne always requires accusative. Example: Ich gehe ohne meinen Bruder. Masculine singular mein Bruder becomes meinen Bruder.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-accusative-durch",
+    "topic": "Accusative Prepositions",
+    "level": "A2",
+    "title": "The preposition durch",
+    "content": "Durch always requires accusative. Example: Wir gehen durch den Park. Der Park becomes den Park.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-accusative-gegen",
+    "topic": "Accusative Prepositions",
+    "level": "A2",
+    "title": "The preposition gegen",
+    "content": "Gegen always requires accusative. Example: Das Auto fährt gegen den Baum.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-accusative-um-spatial",
+    "topic": "Accusative Prepositions",
+    "level": "A2",
+    "title": "The preposition um for location",
+    "content": "When um means around, it takes accusative. Example: Die Kinder laufen um das Haus. This is different from um acht Uhr for clock time.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-accusative-es-gibt",
+    "topic": "Accusative Structures",
+    "level": "A1",
+    "title": "Accusative after es gibt",
+    "content": "The phrase es gibt (there is/there are) takes accusative. Example: In meiner Stadt gibt es einen Bahnhof.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-accusative-adjective-endings",
+    "topic": "Adjective Declension",
+    "level": "A2",
+    "title": "Accusative adjective endings after definite articles",
+    "content": "After definite articles, the accusative masculine singular adjective ends in -en: den kleinen Hund. Other accusative singular forms take -e: die kleine Katze, das kleine Kind; plural takes -en: die kleinen Hunde.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-indirect-object",
+    "topic": "Dative Case",
+    "level": "A1",
+    "title": "Dative for the recipient",
+    "content": "Use dative for a recipient or indirect object with verbs that allow one. Ask Wem? Example: Ich gebe dem Kind ein Buch. Dem Kind is the recipient.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-definite-articles",
+    "topic": "Dative Articles",
+    "level": "A1",
+    "title": "Definite articles in dative",
+    "content": "Dative definite articles are dem (masculine), der (feminine), dem (neuter), and den (plural). Example: Ich helfe dem Mann, der Frau, dem Kind und den Kindern.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-indefinite-articles",
+    "topic": "Dative Articles",
+    "level": "A1",
+    "title": "Indefinite articles in dative",
+    "content": "Dative indefinite articles are einem (masculine), einer (feminine), and einem (neuter). Example: Ich spreche mit einem Mann und einer Frau.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-negation-kein",
+    "topic": "Dative Articles",
+    "level": "A2",
+    "title": "Negation with kein in dative",
+    "content": "Dative forms are keinem (masculine/neuter), keiner (feminine), and keinen (plural). Example: Ich helfe keinem Mann und keinen Kindern.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-plural-n",
+    "topic": "Dative Nouns",
+    "level": "A1",
+    "title": "Extra -n on many dative plural nouns",
+    "content": "Most plural nouns add -n in dative if they do not already end in -n or -s. Example: die Kinder becomes mit den Kindern; die Autos stays mit den Autos.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-personal-pronouns",
+    "topic": "Dative Pronouns",
+    "level": "A1",
+    "title": "Personal pronouns in dative",
+    "content": "Dative pronouns are mir, dir, ihm, ihr, ihm, uns, euch, ihnen, Ihnen. Example: Kannst du mir helfen? Ich danke Ihnen.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-possessive-articles",
+    "topic": "Dative Articles",
+    "level": "A2",
+    "title": "Possessive articles in dative",
+    "content": "Possessive articles take -em (masculine/neuter), -er (feminine), and -en (plural). Example: mit meinem Vater, mit meiner Mutter, mit meinem Kind, mit meinen Freunden.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-aus",
+    "topic": "Dative Prepositions",
+    "level": "A1",
+    "title": "The preposition aus",
+    "content": "Aus always takes dative and often means from or out of. Example: Ich komme aus der Schule. Das Kind kommt aus dem Haus.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-dative-bei",
+    "topic": "Dative Prepositions",
+    "level": "A1",
+    "title": "The preposition bei",
+    "content": "Bei always takes dative and can mean at, near, or with someone. Example: Ich bin bei meiner Freundin. Ich arbeite bei einer Firma.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-dative-nach",
+    "topic": "Dative Prepositions",
+    "level": "A1",
+    "title": "The preposition nach",
+    "content": "Nach always takes dative. It often means after and can indicate direction to cities or most countries without an article. Example: Nach dem Unterricht gehe ich nach Hause.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-dative-seit",
+    "topic": "Dative Prepositions",
+    "level": "A2",
+    "title": "The preposition seit",
+    "content": "Seit always takes dative and expresses a time period starting in the past and continuing to the reference time. Example: Ich lerne seit einem Jahr Deutsch.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-dative-von",
+    "topic": "Dative Prepositions",
+    "level": "A1",
+    "title": "The preposition von",
+    "content": "Von always takes dative and often indicates origin or possession. Example: Das Geschenk ist von meinem Bruder.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-dative-zu",
+    "topic": "Dative Prepositions",
+    "level": "A1",
+    "title": "The preposition zu",
+    "content": "Zu always takes dative, even when describing movement toward a destination. Example: Ich gehe zu meinem Arzt. Zu dem contracts to zum.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-dative-gegenueber",
+    "topic": "Dative Prepositions",
+    "level": "A2",
+    "title": "The preposition gegenüber",
+    "content": "Gegenüber requires dative and can come before or after the noun phrase. Example: Die Bank ist gegenüber dem Bahnhof. Die Bank ist dem Bahnhof gegenüber.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-dative-helfen",
+    "topic": "Dative Verbs",
+    "level": "A1",
+    "title": "The verb helfen takes dative",
+    "content": "Helfen takes a dative object, not accusative. Example: Ich helfe meiner Mutter. Correct: Ich helfe dir; not ich helfe dich.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-danken",
+    "topic": "Dative Verbs",
+    "level": "A1",
+    "title": "The verb danken takes dative",
+    "content": "Danken takes dative for the person thanked. Example: Ich danke dem Lehrer. Ich danke dir.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-antworten",
+    "topic": "Dative Verbs",
+    "level": "A2",
+    "title": "The verb antworten takes dative",
+    "content": "Antworten takes a dative object for the person answered. Example: Sie antwortet dem Mann. Contrast: Sie fragt den Mann (accusative).",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-gefallen",
+    "topic": "Dative Verbs",
+    "level": "A2",
+    "title": "The verb gefallen takes dative",
+    "content": "With gefallen, the thing liked is the nominative subject and the person who likes it is dative. Example: Das Buch gefällt mir. Die Bücher gefallen mir.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-gehoeren",
+    "topic": "Dative Verbs",
+    "level": "A2",
+    "title": "The verb gehören takes dative",
+    "content": "Gehören takes dative for the owner. Example: Das Fahrrad gehört meinem Bruder. Das Fahrrad is nominative.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-schmecken",
+    "topic": "Dative Verbs",
+    "level": "A2",
+    "title": "The verb schmecken takes dative",
+    "content": "With schmecken, the food is nominative and the person experiencing the taste is dative. Example: Die Suppe schmeckt mir.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-dative-adjective-endings",
+    "topic": "Adjective Declension",
+    "level": "A2",
+    "title": "Adjective endings in dative",
+    "content": "Adjectives following a definite article in dative take -en in all genders and plural. Example: mit dem kleinen Hund, mit der kleinen Katze, mit dem kleinen Kind, mit den kleinen Kindern.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-two-way-overview",
+    "topic": "Two-Way Prepositions",
+    "level": "A1",
+    "title": "Two-way prepositions and Wo versus Wohin",
+    "content": "The two-way prepositions are an, auf, hinter, in, neben, über, unter, vor, zwischen. Use dative for location (Wo?) and accusative for direction or change of location (Wohin?). Movement alone does not automatically mean accusative. Example: Ich laufe im Park (location), ich laufe in den Park (destination).",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-in",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "The two-way preposition in",
+    "content": "In uses dative for static location (Wo?) and accusative for destination (Wohin?). Dative: Das Kind spielt in dem Garten. Accusative: Das Kind läuft in den Garten.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-auf",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "The two-way preposition auf",
+    "content": "Auf uses dative for static location (Wo?) and accusative for destination (Wohin?). Dative: Das Buch liegt auf dem Tisch. Accusative: Ich lege das Buch auf den Tisch.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-an",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "The two-way preposition an",
+    "content": "An uses dative for static location (Wo?) and accusative for destination (Wohin?). Dative: Das Bild hängt an der Wand. Accusative: Ich hänge das Bild an die Wand.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-unter",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "The two-way preposition unter",
+    "content": "Unter uses dative for static location (Wo?) and accusative for destination (Wohin?). Dative: Die Katze sitzt unter dem Tisch. Accusative: Die Katze läuft unter den Tisch.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-neben",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "The two-way preposition neben",
+    "content": "Neben uses dative for static location (Wo?) and accusative for destination (Wohin?). Dative: Ich stehe neben dem Auto. Accusative: Ich stelle mich neben das Auto.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-vor",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "The two-way preposition vor",
+    "content": "Vor uses dative for static location (Wo?) and accusative for destination (Wohin?). Dative: Wir warten vor dem Kino. Accusative: Wir gehen vor das Kino.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-hinter",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "The two-way preposition hinter",
+    "content": "Hinter uses dative for static location (Wo?) and accusative for destination (Wohin?). Dative: Der Hund sitzt hinter dem Haus. Accusative: Der Hund läuft hinter das Haus.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-ueber",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "The two-way preposition über",
+    "content": "Über uses dative for static location (Wo?) and accusative for destination (Wohin?). Dative: Die Lampe hängt über dem Tisch. Accusative: Ich hänge die Lampe über den Tisch.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-zwischen",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "The two-way preposition zwischen",
+    "content": "Zwischen uses dative for static location (Wo?) and accusative for destination (Wohin?). Dative: Der Stuhl steht zwischen den Tischen. Accusative: Ich stelle den Stuhl zwischen die Tische.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-motion-not-enough",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "Movement does not always mean accusative",
+    "content": "With two-way prepositions, choose case by location versus destination, not merely by whether the verb describes movement. Example: Ich schwimme im See (dative; within the lake). Ich springe in den See (accusative; into the lake).",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-legen-liegen",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "Legen versus liegen",
+    "content": "Legen describes putting something somewhere and often uses an accusative destination phrase. Liegen describes being somewhere and uses a dative location phrase. Example: Ich lege das Buch auf den Tisch. Das Buch liegt auf dem Tisch.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-stellen-stehen",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "Stellen versus stehen",
+    "content": "Stellen means to place something upright and often takes an accusative destination phrase. Stehen expresses location and uses dative. Example: Ich stelle die Flasche auf den Tisch. Die Flasche steht auf dem Tisch.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-two-way-setzen-sitzen",
+    "topic": "Two-Way Prepositions",
+    "level": "A2",
+    "title": "Setzen versus sitzen",
+    "content": "Sich setzen refers to taking a seat and often uses an accusative destination phrase. Sitzen indicates a location and uses dative. Example: Ich setze mich auf den Stuhl. Ich sitze auf dem Stuhl.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-cases-two-objects",
+    "topic": "Dative and Accusative",
+    "level": "A2",
+    "title": "Dative recipient and accusative thing",
+    "content": "Some verbs, such as geben, schicken, and zeigen, take a dative recipient and an accusative thing. Example: Ich gebe dem Mann den Schlüssel. Dem Mann is dative; den Schlüssel is accusative.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-cases-object-order-nouns",
+    "topic": "Dative and Accusative",
+    "level": "A2",
+    "title": "Typical order when both objects are nouns",
+    "content": "When both objects are nouns, dative often comes before accusative in neutral word order. Example: Ich gebe dem Kind das Buch. Different orders can be used for emphasis or context.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-cases-object-order-pronouns",
+    "topic": "Dative and Accusative",
+    "level": "A2",
+    "title": "Object order with pronouns",
+    "content": "If both objects are personal pronouns, the accusative pronoun normally precedes the dative pronoun. Example: Ich gebe es ihm. With a dative pronoun and an accusative noun: Ich gebe ihm das Buch.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-cases-contractions",
+    "topic": "Prepositions and Articles",
+    "level": "A1",
+    "title": "Common preposition-article contractions",
+    "content": "Common contractions include in dem = im, in das = ins, an dem = am, bei dem = beim, von dem = vom, zu dem = zum, and zu der = zur. Example: Ich bin im Park; ich gehe ins Kino.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-cases-wo-wohin",
+    "topic": "Case Questions",
+    "level": "A1",
+    "title": "Asking Wo and Wohin",
+    "content": "Wo asks where something is and often introduces a dative location with a two-way preposition. Wohin asks where something is going and often introduces an accusative destination. Example: Wo bist du? Im Büro. Wohin gehst du? Ins Büro.",
+    "source": "https://deutsch.lingolia.com/en/grammar/prepositions"
+  },
+  {
+    "id": "grammar-cases-wer-wen-wem",
+    "topic": "Case Questions",
+    "level": "A1",
+    "title": "Case questions Wer, Wen, Wem",
+    "content": "Wer? asks for a nominative person (subject); Wen? asks for an accusative person; Wem? asks for a dative person. Example: Wer hilft? Der Mann. Wen sieht er? Den Lehrer. Wem hilft er? Dem Kind.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-cases-masculine-article-comparison",
+    "topic": "Case Comparison",
+    "level": "A1",
+    "title": "Masculine der-den-dem pattern",
+    "content": "For masculine singular nouns, definite articles change as nominative der, accusative den, dative dem. Example: Der Hund schläft. Ich sehe den Hund. Ich helfe dem Hund.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-cases-feminine-article-comparison",
+    "topic": "Case Comparison",
+    "level": "A1",
+    "title": "Feminine die-die-der pattern",
+    "content": "For feminine singular nouns, definite articles are nominative die, accusative die, dative der. Example: Die Frau spricht. Ich sehe die Frau. Ich helfe der Frau.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-cases-neuter-article-comparison",
+    "topic": "Case Comparison",
+    "level": "A1",
+    "title": "Neuter das-das-dem pattern",
+    "content": "For neuter singular nouns, definite articles are nominative das, accusative das, dative dem. Example: Das Kind spielt. Ich sehe das Kind. Ich helfe dem Kind.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
+  },
+  {
+    "id": "grammar-cases-plural-article-comparison",
+    "topic": "Case Comparison",
+    "level": "A1",
+    "title": "Plural die-die-den pattern",
+    "content": "For plural nouns, definite articles are nominative die, accusative die, dative den. Dative often adds -n to the noun. Example: Die Kinder spielen. Ich sehe die Kinder. Ich helfe den Kindern.",
+    "source": "https://deutsch.lingolia.com/en/grammar/declension"
   }
 ]
-

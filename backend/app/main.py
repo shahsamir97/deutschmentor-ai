@@ -70,4 +70,5 @@ app.include_router(
 
 app.include_router(
     grammar_explanation_router,
+    prefix="/api/v1",
 )
