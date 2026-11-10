@@ -19,6 +19,8 @@ import type {
   TranslationState,
 } from './types/translation'
 
+import { GrammarSection } from './components/GrammarSection'
+
 function App() {
   const [direction, setDirection] = useState<TranslationDirection>('de-en')
   const [text, setText] = useState('')
