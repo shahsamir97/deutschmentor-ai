@@ -3,10 +3,9 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
-from pydantic import SecretStr
 
 from app.api.dependencies import get_translation_service
-from app.core.config import Settings, get_settings
+from app.core.config import Settings
 from app.main import app
 from app.schemas.translation import (
     Correction,

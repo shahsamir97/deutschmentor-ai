@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, field_validator
 
+
 class GrammarExplanationRequest(BaseModel):
     sentences: list[str] = Field(
         min_items=2,
