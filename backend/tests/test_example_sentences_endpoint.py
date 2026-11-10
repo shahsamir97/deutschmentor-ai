@@ -9,7 +9,7 @@ from app.api.dependencies import (
     get_example_sentence_generation_service,
     get_openai_client,
 )
-from app.core.config import Settings, get_settings
+from app.core.config import get_settings, get_settings_for_testing
 from app.main import app
 from app.schemas.example_sentences import (
     ExampleSentenceItem,
@@ -124,13 +124,8 @@ def test_examples_uses_injected_client_and_configured_model():
     openai_client = MagicMock()
     openai_client.responses.parse = parse
     app.dependency_overrides[get_openai_client] = lambda: openai_client
-    app.dependency_overrides[get_settings] = lambda: Settings(
-        openai_api_key="test-key",
-        openai_model="configured-model",
-        database_url="postgresql+asyncpg://test:test@localhost/test",
-        embedding_model="test-embedding-model",
-        _env_file=None,
-)
+    settings = get_settings_for_testing()
+    app.dependency_overrides[get_settings] = lambda: settings
 
     try:
         response = TestClient(app).post("/api/v1/example-sentences", json=PAYLOAD)
@@ -139,4 +134,4 @@ def test_examples_uses_injected_client_and_configured_model():
 
     assert response.status_code == 200
     assert response.json() == RESPONSE
-    assert parse.await_args.kwargs["model"] == "configured-model"
+    assert parse.await_args.kwargs["model"] == settings.openai_model
