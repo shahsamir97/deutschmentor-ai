@@ -1,11 +1,25 @@
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel, Field, field_validator
 
 class GrammarExplanationRequest(BaseModel):
-    sentence: list[str] = Field(
-        min_length=2,
-        max_length=2,
+    sentences: list[str] = Field(
+        min_items=2,
+        max_items=2,
     )
+
+    @field_validator("sentences")
+    @classmethod
+    def validate_sentences(
+        cls,
+        sentences: list[str],
+    ) -> list[str]:
+        for sentence in sentences:
+            if not sentence.strip():
+                raise ValueError("Sentences cannot be empty or whitespace")
+
+            if len(sentence) > 300:
+                raise ValueError("Sentences cannot be longer than 300 characters")
+
+        return sentences
 
 class GrammarPoint(BaseModel):
     explanation: str

@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 from pydantic import SecretStr
 
 from app.api.dependencies import get_translation_service
-from app.core.config import Settings
+from app.core.config import Settings, get_settings
 from app.main import app
 from app.schemas.translation import (
     Correction,
@@ -131,8 +131,10 @@ def test_cors_rejects_unknown_origin(client):
 
 def test_lifespan_closes_openai_client():
     settings = Settings(
-        openai_api_key=SecretStr("test-key"),
-        openai_model="test-model",
+        openai_api_key="test-key",
+        openai_model="configured-model",
+        database_url="postgresql+asyncpg://test:test@localhost/test",
+        embedding_model="test-embedding-model",
         _env_file=None,
     )
 

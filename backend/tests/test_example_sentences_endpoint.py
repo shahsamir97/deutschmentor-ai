@@ -125,8 +125,12 @@ def test_examples_uses_injected_client_and_configured_model():
     openai_client.responses.parse = parse
     app.dependency_overrides[get_openai_client] = lambda: openai_client
     app.dependency_overrides[get_settings] = lambda: Settings(
-        openai_api_key="test-key", openai_model="configured-model", _env_file=None
-    )
+        openai_api_key="test-key",
+        openai_model="configured-model",
+        database_url="postgresql+asyncpg://test:test@localhost/test",
+        embedding_model="test-embedding-model",
+        _env_file=None,
+)
 
     try:
         response = TestClient(app).post("/api/v1/example-sentences", json=PAYLOAD)

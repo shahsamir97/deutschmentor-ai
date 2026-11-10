@@ -10,6 +10,7 @@ from app.api.dependencies import (
     create_speech_service,
 )
 from app.api.example_sentences import router as example_sentence_router
+from app.api.grammar_explanation import router as grammar_explanation_router
 from app.api.health import router as health_router
 from app.api.speech import router as speech_router
 from app.api.translation import router as translation_router
@@ -65,4 +66,8 @@ app.include_router(
 app.include_router(
     speech_router,
     prefix="/api/v1",
+)
+
+app.include_router(
+    grammar_explanation_router,
 )
