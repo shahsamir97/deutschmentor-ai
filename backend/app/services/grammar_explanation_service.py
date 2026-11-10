@@ -1,13 +1,12 @@
+from app.db.models.grammar_rule import GrammarRule
 from openai import AsyncOpenAI
-
-from app.services.grammar_retriever import GrammarRetriever
-from app.services.grammar_prompt import build_grammar_prompt
 
 from app.schemas.grammar_explanation import (
     GrammarExplanationRequest,
     GrammarExplanationResponse,
-    SentenceExplanation
+    SentenceExplanation,
 )
+from app.services.grammar_retriever import GrammarRetriever
 
 
 class GrammarExplanationService:
@@ -33,7 +32,7 @@ class GrammarExplanationService:
                 points=[]
             )
 
-        prompt = build_grammar_prompt(
+        prompt = self.build_grammar_prompt(
             sentence=sentence,
             rules=rules,
         )
@@ -66,19 +65,36 @@ class GrammarExplanationService:
         valid_points = [
             point
             for point in parsed.points
-            # if point.explanation.strip()
-            # and point.rule_ids
-            # and all(
-            #     rule_id in allowed_ids
-            #     for rule_id in point.rule_ids
-            # )
+            if point.explanation.strip()
+            and point.rule_ids
+            and all(
+                rule_id in allowed_ids
+                for rule_id in point.rule_ids
+            )
         ]
 
         print(parsed.points)
 
         return SentenceExplanation(
             sentence=sentence,
-            points=parsed.points,
+            points=valid_points,
+        )
+
+    def build_grammar_prompt(
+        self,
+        sentence: str,
+        rules: list[GrammarRule]
+    ) -> str:
+        context = "\n\n".join(
+            f"Rule ID: {rule.id}\n"
+            f"Title: {rule.title}\n"
+            f"Content: {rule.content}\n"
+            for rule in rules
+        )
+
+        return (
+            f"German sentence:\n{sentence}\n\n"
+            f"Retrieved grammar rules:\n{context}"
         )
 
     async def explain(
