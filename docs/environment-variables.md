@@ -61,3 +61,17 @@ Errors: `422` for invalid input, `429` when the client or provider quota
 is exceeded, `504` on provider timeout, and `502` for other provider or
 credential failures. Error responses never include provider messages or
 the submitted text.
+
+## Running the full stack with Docker Compose
+
+```sh
+docker compose --env-file backend/.env -f infrastructure/docker/compose.db.yml up -d --build
+```
+
+The app is served at `http://localhost:8080` (override with `FRONTEND_PORT`).
+nginx serves the frontend and proxies `/api/` to the backend, which runs
+`alembic upgrade head` on start. `backend/.env` must also define
+`POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`; the backend's
+`DATABASE_URL` is derived from them inside Compose (avoid URL-reserved
+characters in the password). Google TTS credentials are not mounted by
+default.
